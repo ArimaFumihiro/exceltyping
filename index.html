@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <title>Document</title>
+</head>
+<body class="theme">
+  <div class="hamburger" id="js-hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  
+  <nav class="navigation" id="js-nav">
+    <ul>
+      <li>
+        <a href="#">ゲーム設定
+          <div class="nav-contents">
+            <label class="switch" title="テーマ">
+              テーマ:
+              <select id="theme">
+                <option value="pop" selected>ポップ</option>
+                <option value="dark">ダーク</option>
+                <option value="light">ライト</option>
+                <option value="classic">キュート</option>
+              </select>
+            </label>
+          </div>
+          <div class="nav-contents">
+            <label class="switch" title="キャラクター">
+              <span class="environment">キャラクター</span>
+              <input type="checkbox" id="chara" checked />
+            </label>
+          </div>
+          <div class="nav-contents">
+            <label class="switch" title="音（正解/不正解）">
+              <span class="environment"> 効果音</span>
+              <input type="checkbox" id="sound" checked />
+            </label>
+          </div>
+          <div class="nav-contents">
+            <label class="switch" title="BGM">
+              <span class="environment"> BGM</span>
+              <input type="checkbox" id="BGM" checked />
+            </label>
+          </div>        
+        </a>
+      </li>
+      <li>
+        <a href="#">遊び方
+          <div class="nav-contents">
+            <span class="environment">タイピング</span>
+          </div>
+          <div class="nav-contents">
+            <span class="environment">クイズ</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="#">プレイ記録          
+          <div class="nav-contents">
+            <span class="environment">タイピング</span>
+          </div>
+          <div class="nav-contents">
+            <span class="environment">クイズ</span>
+          </div>          
+        </a>
+      </li>
+      <li>
+        <a href="#">お知らせ</a>
+      </li>
+      <li>
+        <a href="#">データを初期化
+          <div class="nav-contents">
+            <label class="switch" title="ゲームの記録初期化">
+              <span class="environment">ゲームの記録を消す</span>
+            </label>
+          </div>
+          <div class="nav-contents">
+            <label class="switch" title="設定キャラクター">
+              <span class="environment">設定を初期状態に戻す</span>
+            </label>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="overlay" id="overlay"></div>
+  <div id="home" >
+    <div class="home-container">
+      <!-- タイトル -->
+      <div class="home-title">
+        <img id="home-chara" class="chara-img" src="./image/hiyoko-b.png" alt="ひよこ">
+        ウチぴよ
+      </div>
+      <span class="home-sub-title">- Excel関数編 -</span>
+    
+      <!-- スタートボタン -->
+      <button id="startBtn" class="startBtn">スタート</button>
+    
+      <!-- 設定パネル -->
+      <div class="home-settings">
+        <label>
+          時間設定:
+          <select id="duration">
+            <option value="30">30秒</option>
+            <option value="60" selected>60秒</option>
+            <option value="∞">∞秒</option>
+          </select>
+        </label>
+    
+        <label>
+          モード選択:
+          <select id="mode">
+            <option value="normal" selected>タイピング</option>
+            <option value="quiz">クイズ</option>
+          </select>
+        </label>
+        <div class="best-score" id="best-score">ハイスコア：</div>
+      </div>
+      <div class="home-hint">
+        <span>スペースキーでもスタートできます</span>
+      </div>
+      
+    </div>
+  </div>
+
+
+  <div id="game" class="game-container hidden-element">
+    <!-- <div class="game-container"> -->
+  
+      <!-- ゲーム画面 -->
+      <div class="main-content-area"  id="geme-screen">     
+        <div class="row">
+          <aside class="card ">
+            <!-- Excel風プレビュー -->
+            <section aria-live="polite">
+              <div class="qestion-contents">
+                <div class="character-area">
+                  <div class="qestion-area">
+                    <div class="function-title" id="subject">■ 関数名</div>
+                    <div class="kana hidden" id="kana"></div>
+                    <div class="hint" id="hint"> </div>
+                  </div>
+                  <div class="mascot-character">
+                    <img id="game-chara" class="chara-img" src="./image/hiyoko-b.png" alt="ひよこ">
+                  </div>
+                </div>
+
+                <div class="typing-area">
+                  <div class="typing-words" id="typing-words"></div>
+                </div>
+              </div>
+              
+              <div class="scoreline">
+                <div class="badge">残り時間: <span id="time">-</span></div>
+                <div class="badge">コンボ: <span id="combo-fire" class="fire-effect invisible-element">🔥</span><span id="combo">-</span></span></div>
+                <div class="badge">WPM: <span id="wpm-fire" class="fire-effect invisible-element">🔥</span><span id="wpm">-</span></div>
+                <div class="badge score" >スコア: <span id="score">-</span></div>
+              </div>
+              <div class="meter" style="margin-top:8px">
+                <div id="timebar" style="width:0%"></div>
+              </div>                         
+            </section>
+
+            <section class="reference-wrraper">
+              <div class="viwe">
+                <span class="stat">Excel風プレビュー</span>
+                <div class="grid">
+                  <div class="fxbar">
+                    <div class="address" id="address">A5</div>
+                    <div style="color:var(--accent);font-weight:700;font-size: 0.75rem;">fx</div>
+                    <div id="fx" class="fx">=SUM(A2:A4)</div>
+                  </div>
+                  <div class="cells" id="cells">
+                    <span class="cell rows column-number"></span><span class="cell column-number">A</span><span
+                    class="cell column-number">B</span>
+                    <span class="cell column-number">C</span><span class="cell column-number">D</span><span
+                    class="cell column-number">E</span>
+                    <span class="cell rows">1</span><span class="cell" id="A1"></span><span class="cell" id="B1"></span><span
+                    class="cell" id="C1"></span><span class="cell" id="D1" ></span><span class="cell" id="E1"></span>
+                    <span class="cell rows">2</span><span class="cell" id="A2"></span><span class="cell" id="B2"></span><span
+                    class="cell" id="C2"></span><span class="cell" id="D2"></span><span class="cell" id="E2"></span>
+                    <span class="cell rows">3</span><span class="cell" id="A3"></span><span class="cell" id="B3"></span><span
+                    class="cell" id="C3"></span><span class="cell" id="D3"></span><span class="cell" id="E3"></span>
+                    <span class="cell rows">4</span><span class="cell" id="A4"></span><span class="cell" id="B4"></span><span
+                    class="cell" id="C4"></span><span class="cell" id="D4"></span><span class="cell" id="E4"></span>
+                    <span class="cell rows">5</span><span class="cell answer" id="A5"></span><span class="cell" id="B5"></span><span
+                    class="cell" id="C5"></span><span class="cell" id="D5"></span><span class="cell" id="E5"></span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 使い方画面 -->
+              <div style="max-height: 100%;">
+                <span class="stat">使い方</span>
+                <div class="grid">
+                  <div class="explanation-wrraper">
+                    <div id="How-to-text" class="how-to-text"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <div class="list" style="margin-top:10px">
+              <span class="chip">Esc : スタート画面に戻る</span>
+            </div>
+          </aside>
+        </div>
+      </div>
+    <!-- </div> -->
+  </div>
+
+  <!-- END画面 -->
+  <div id="end" class="end-container hidden-element">
+    <div class="end-container">
+      <!-- タイトル -->
+      <div class="end-title">
+        <img  id="end-chara" class="chara-img" src="./image/hiyoko-b.png" alt="ひよこ">
+        ウチぴよ
+      </div>
+    
+      <!-- 結果パネル -->
+   
+      <div class="result-box">
+        <div class="score-title">スコア</div>
+        <canvas id="end-canvas" class="canvas"></canvas>
+        
+        <div class="record" id="record1">
+          <div class="stat-row"><span class="final-grades">正答数：</span><span class="final-grades" id="end-correct"></span></div>
+          <div class="stat-row"><span class="final-grades">WPM：</span><span class="final-grades" id="end-wpm"></span></div>          
+        </div>
+        <div class="record" id="record2">
+          <div class="stat-row"><span class="final-grades">ミス：</span><span class="final-grades" id="end-miss"></span></div>
+          <div class="stat-row"><span class="final-grades">最大コンボ：</span><span class="final-grades" id="end-combo"></span></div>
+        </div>
+        <div class="record" id="record3">
+          <div class="stat-row"><span class="final-grades">正答率：</span><span class="final-grades" id="end-rate"></span></div>
+          <div class="stat-row invisible-element" id="record3-quiz"><span class="final-grades">問題数：</span><span class="final-grades" id="end-quiz"></span></div>
+        </div> 
+        <div class="best-score" id="best-score">ハイスコア：</div>
+      </div>
+   
+      <button id="retry">もう一度プレイ</button>
+      <button id="titleReturn">タイトルへ戻る</button>
+    
+      <div class="chip">スペースキー：もう一度プレイ / Esc：タイトルへ戻る</div>
+    </div>
+  </div>
+  
+  
+  <script type="module" src="./script.js"></script>
+</body>
+</html>
